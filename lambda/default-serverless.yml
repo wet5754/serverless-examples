@@ -1,0 +1,49 @@
+service: service-name
+
+frameworkVersion: "3"
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-offline
+  - serverless-deployment-bucket
+
+custom:
+  STAGE: ${self:provider.stage}
+  CONFIG: ${file(./config.js):CONFIG}
+  deploymentBucket:
+    versioning: true
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  stage: ${opt:stage, 'test'} # -s 옵션을 받으면 사용하고, 그렇지 않으면 기본 test 스테이지 사용
+  region: ap-northeast-2
+  timeout: 600
+  memorySize: 256
+  iam:
+    role: 
+  environment:
+    STAGE: ${self:provider.stage}
+    ENV: ${self:custom.CONFIG.${self:custom.STAGE}.ENV}
+    DB_HOST: ${self:custom.CONFIG.${self:custom.STAGE}.DB_HOST}
+    DB_USER: ${self:custom.CONFIG.${self:custom.STAGE}.DB_USER}
+    DB_PASSWORD: ${self:custom.CONFIG.${self:custom.STAGE}.DB_PASSWORD}
+    DB_DATABASE: ${self:custom.CONFIG.${self:custom.STAGE}.DB_DATABASE}
+    SENTRY_DSN: ${self:custom.CONFIG.${self:custom.STAGE}.SENTRY_DSN}
+
+  deploymentBucket:
+    name: 
+
+  vpc:
+    securityGroupIds: 
+    subnetIds:
+      - 
+      - 
+
+functions:
+  function:
+    handler: src/handler.handler
+    description: 
+    events:
+      - eventBridge:
+          schedule: cron(45 17 ? * * *)
