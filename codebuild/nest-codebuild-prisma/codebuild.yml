@@ -1,0 +1,18 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 14
+    commands:
+      - cd timespread-app-download-statics
+      - npm install
+      - npm install -g typescript
+  pre_build:
+    commands:
+      - npm run build
+  post_build:
+    commands:
+      - ls -al
+      - pwd
+      - npm run start:prod
