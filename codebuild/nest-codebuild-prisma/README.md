@@ -1,4 +1,4 @@
-<h2> nest-prisma를 사용한 코드빌드 구조
+<h2> nest-prisma를 사용한 코드빌드 구조 <h2>
 
 > npm install prisma --save-dev
 > npx prisma init
